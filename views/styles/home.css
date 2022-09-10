@@ -1,0 +1,221 @@
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('Source Sans Pro.ttf');
+} @font-face {
+  font-family: 'Source Code Pro';
+  src: url('Source Code Pro.ttf');
+} @font-face {
+  font-family: 'Candara';
+  src: url('Candara.ttf');
+} @font-face {
+  font-family: 'Giveny';
+  src: url('Giveny.ttf');
+} @font-face {
+  font-family: 'Copperplate';
+  src: url('Copperplate.ttf');
+}
+html, body {
+  box-shadow: inset 1px 1px 15px 20px black;
+  background: black;
+  min-height: 100% !important;
+}
+body {
+  background: linear-gradient(rgb(80, 70, 60) 20%, rgb(55, 50, 50), rgb(30, 30, 30));
+  color: gainsboro;
+  font-size: 1.4rem;
+  font-family: 'Source Sans Pro';
+}
+nav {
+  transition: all 1s;
+  display: flex;
+  justify-content: space-between;
+
+  background: url('/Virtual Light Blanket.jpg');
+  filter: hue-rotate(160deg);
+  border: 2px double gray;
+  box-shadow: inset 1px 1px 10px 6px black;
+}
+nav:hover {
+  transition: all 1s;
+  box-shadow: 1px 0px 0px 0px black;
+}
+nav:hover .nav-left .nav-link, nav:hover .nav-right .nav-link{
+  transform: translate(0%) !important;
+}
+.nav-topline {
+  position: absolute;
+  border-top: 2px solid gray;
+  width: 100%;
+}
+a {
+  min-width: 150px;
+  font-size: 1.2rem;
+
+  font-family: 'Source Code Pro';
+  color: lightblue;
+  text-decoration: none;
+}
+.nav-left, .nav-right {
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+  width: 100%;
+}
+.nav-left .nav-link {
+  transform: translateX(450%);
+}
+.nav-center {
+  position: relative;
+  width: 200px;
+  height: 100px;
+  margin-left: auto;
+  margin-right: auto;
+
+  transition: padding 0.7s;
+  box-shadow: inset 1px 1px 7px 3px black;
+  border: 2px double gray;
+} .nav-center img {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0px 1px 2px lightblue);
+}
+.nav-center:hover {
+  padding: 0% 5% 0% 5%;
+  filter: hue-rotate(200deg) !important;
+}
+.nav-right .nav-link {
+  transform: translateX(-450%);
+}
+.nav-link {
+  margin: auto;
+  transition: transform 1s;
+}
+.nav-link a:hover {
+  filter: hue-rotate(220deg) !important;
+} .nav-link a:hover img {
+  filter: invert(1);
+}
+.nav-link a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.nav-link img {
+  max-width: 40px;
+  height: auto;
+
+  filter: invert(1);
+  opacity: 0.6;
+} .nav-link h6, h5, h4 {
+  margin: 0px;
+}
+header {
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+
+  background-image: url('/Black And White.jpg');
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  box-shadow: inset 1px 1px 100px 150px black !important;
+  border-bottom: 3px double gray;
+} .header-msg {
+  padding: 7%;
+  position: absolute;
+  text-align: center;
+  background: url('/noise.png') repeat #262626;
+  background-size: 0;
+
+  color: lavender;
+}
+main {
+  background-position: center !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
+  background: url('/Black Cube Canyon.jpg');
+
+  margin: auto;
+}
+.project-list {
+  /* background: black; */
+  background: rgba(0,0,0,0.7);
+}
+.project {
+  transition: all 0.6s ease-in-out;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+  border: 2px double rgb(30, 30, 30);
+  min-height: 400px;
+  background: rgba(0,0,0,0.7);
+} .project:hover {
+  transition: all 0.6s ease-in-out;
+  padding: 8px;
+  margin: 15px;
+  box-shadow: 1px 1px 10px 7px lightblue;
+} .project:hover .demo {
+  display: block;
+}
+.project * {
+  position: relative;
+  margin: auto;
+  width: 100%;
+  max-width: 500px;
+}
+.img-shroud {
+  height: 100%;
+  min-width: 300px;
+  width: 100%;
+  position: relative;
+  box-shadow: 1px 1px 40px 30px black;
+  opacity: 0.8;
+}
+.img-2 {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.project-simulacrum img:nth-of-type(2):hover {
+  filter:drop-shadow(1px 1px 1px #22a0f4);
+}
+.glow-line {
+  box-shadow: 2px 2px 2px 2px lightblue;
+  margin: 30px 0px 30px 0px;
+}
+footer {
+  width: 100vh;
+  min-height: 400px;
+}
+
+.shade-1 { box-shadow: 1px 1px 1px black; }
+.shade-2 { box-shadow: 2px 2px 2px black; }
+.shade-3 { box-shadow: 3px 3px 3px black; }
+.shade-4 { box-shadow: 4px 4px 4px black; }
+.shade-5 { box-shadow: 5px 5px 5px black; }
+.shade-6 { box-shadow: 6px 6px 6px black; }
+.shade-7 { box-shadow: 7px 7px 7px black; }
+.shade-8 { box-shadow: 8px 8px 8px black; }
+.shade-9 { box-shadow: 9px 9px 9px black; }
+@media (min-width: 1100px) {
+  .project-WOW-randomizer .img-shroud {
+    margin-left: 10px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .nav-left .nav-link {
+    transform: translateY(200%) !important;
+  }
+  .nav-right .nav-link {
+    transform: translateY(-200%) !important;
+  }
+  .nav-left, .nav-right {
+    flex-direction: column;
+  }
+  .nav-center:hover {
+    padding: 5% 0% 5% 0% !important;
+    transition: all 0.5s;
+  }
+}

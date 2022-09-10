@@ -1,3 +1,4 @@
-target
 resources
+target
 src/main.exe
+workspace.code-workspace

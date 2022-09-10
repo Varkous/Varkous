@@ -1,0 +1,235 @@
+<!-- <script type="text/javascript" src="/homeFunctions.js"></script> -->
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<script
+		src="https://code.jquery.com/jquery-3.5.1.min.js"
+		integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+		crossorigin="anonymous"></script>
+		<meta charset="utf-8">
+		<title>WoW Character Generator</title>
+	</head>
+	<body>
+		<main class="container">
+			<img src="/warcraft-images/WoW Logo.png" alt="" style="width: 600px; height: 350px;">
+			<h1>Random Character Generator</h1>
+			<p>Select your faction if allowed, hit SUBMIT, and may God have mercy on your soul.</p>
+			<section class="container">
+				<div class="selection">
+					<label for="faction">Select Faction</label>
+						<select id="Faction" name="faction">
+								<option value="Random">Random</option>
+								<option value="Alliance">Alliance</option>
+								<option value="Horde">Horde</option>
+						</select>
+						<button id="Submit">Submit</button>
+				</div>
+				<img id="FactionChoice" src="" width="200" height="200">
+				<h2 id="RaceChoice"></h2>
+				<h2 id="ClassChoice"></h2>
+				<img id="YourCharacter" src="" alt="">
+				<h1><span id="GenderChoice"></span></h1>
+				<p id="Output"></p>
+			</section>
+
+
+		</main>
+
+	</body>
+</html>
+
+
+
+<style media="screen">
+:root {
+	--RaceClass: "";
+}
+	body {
+		background: url('/warcraft-images/Thunder Bluff.jpg');
+		background-size: cover;
+		font-family: 'Arial';
+		color: aliceblue;
+
+		transition: all 1s ease-in-out;
+		font-size: 1.5rem;
+		height: 70%;
+	}
+	main {
+		background: rgba(0,0,0,0.5);
+		border: 3px double white;
+		box-shadow: inset 8px 12.2px 6px 9px black,
+		inset 4px 12.2px 6px 9px black,
+		inset 9px 22.2px 16px 19px black,
+		inset 18px 32.2px 26px 29px black;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		text-align: center;
+		align-self: center;
+		margin: auto;
+		height: 70%;
+	}
+	img {
+		align-self: center;
+		width: 70%;
+		height: 70%;
+	}
+	#FactionChoice {
+	width: 128px;
+	height: 128px;
+	}
+	.selection {
+		display:flex;
+		flex-direction: column;
+		align-self: center;
+	}
+	button {
+		text-shadow: 1px 1px 1px black;
+		font-family: Black Ops One;
+		background: rgba(79, 87, 163, 0.7);
+		color: rgb(250, 187, 86);
+
+		margin-top: 15px;
+		align-self: center;
+		width: 200px;
+		font-size: 2.0rem;
+	}
+	select {
+		border: 2px solid gray;
+		font-family: 'Segoe UI';
+
+		font-size: 2.0rem;
+		width: 200px;
+	}
+	.container {
+
+		display: flex;
+		justify-content: center;
+		align-self: center;
+		align-content: center;
+		flex-direction: column;
+		min-height: 1000px;
+		width: 80%;
+	}
+	h2 {
+		margin: auto;
+		font-family: 'Black Ops One';
+		font-size: 30px;
+		text-shadow: 1px 1px 1px black;
+
+	}
+	#YourCharacter {
+		box-shadow: 2px 3px 4px 5px black;
+		border-radius: 50px;
+
+		max-width: 800px;
+		max-height: 700px;
+		align-self: center;
+		margin: 25px;
+	}
+
+	.fadeout {
+	  transition: all 1s ease;
+	  opacity: 0;
+	  transform: scale(0);
+	}
+	.fadein {
+	  transition: all 1s ease;
+	  opacity: 1.0;
+	  transform: scale(1.0);
+	}
+</style>
+
+<script type="text/javascript">
+// -----------------------------------------------
+function RandomizeValue(obj,param) {
+		// var selection=param?obj[param]:obj;
+	let selection;
+	if (param) /*----*/ selection = obj[param]; //The param will always be the name of a property within the resource object (character), so for instance if the chosen faction was "Alliance" then character.race["Alliance"] is what we get (NOT an array). We then randomize from the elements WITHIN character.race.Alliance (which will be four choices). Same thing with race and class.
+	else selection = obj;
+	return selection[Math.floor(Math.random()*selection.length)];
+}
+// -----------------------------------------------
+function GetElement(id) {
+	return document.getElementById(id);
+}
+// -----------------------------------------------
+	(async function() {
+    const character={
+    faction:["Alliance", "Horde"],
+    race:{"Alliance":["Dwarf","Gnome","Human","Night Elf", "Draenei"],
+          "Horde":["Orc","Troll","Tauren","Undead", "Blood Elf"]},
+    class:{"Dwarf":["Hunter","Paladin","Priest","Rogue","Warrior"],
+           "Gnome":["Mage","Rogue","Warlock","Warrior"],
+           "Human":["Mage","Paladin","Priest","Rogue","Warlock","Warrior"],
+           "Night Elf":["Druid","Hunter","Priest","Rogue","Warrior"],
+           "Draenei":["Paladin","Hunter","Mage","Shaman","Warrior", "Priest"],
+           "Undead":["Mage","Priest","Rogue","Warlock","Warrior"],
+           "Orc":["Hunter","Rogue","Shaman","Warlock","Warrior"],
+           "Tauren":["Druid","Hunter","Shaman","Warrior"],
+           "Troll":["Hunter","Mage","Priest","Rogue","Shaman","Warrior"],
+           "Blood Elf":["Hunter","Mage","Priest","Rogue","Paladin","Warlock"]},
+    // spec:{"Druid":["Balance","Feral","Restoration"],
+    //       "Hunter":["Beastmaster","Marksmanship","Survival"],
+    //       "Mage":["Arcane","Fire","Frost"],
+    //       "Paladin":["Holy","Protection","Retribution"],
+    //       "Priest":["Discipline","Holy","Shadow"],
+    //       "Rogue":["Assassination","Combat","Subtlety"],
+    //       "Shaman":["Elemental","Enhancement","Restoration"],
+    //       "Warlock":["Affliction","Demonology","Destruction"],
+    //       "Warrior":["Arms","Fury","Protection"]}
+    };
+    GetElement("Submit").onclick = function () { //When button is clicked
+        const newCreation= {faction:"",race:"",sex:"",class:"",spec:""};
+				$("#GenderChoice").removeClass('fadein').addClass('fadeout');
+				// GetElement("GenderChoice").classList.add('fadein').addClass('fadeout');
+
+				if (GetElement("Faction").value === "Random") {
+					newCreation.faction = RandomizeValue(character.faction);
+				} else newCreation.faction = GetElement("Faction").value;
+        // newCreation.faction=GetElement("Faction").value==="Random"?RandomizeValue(character.faction):GetElement("Faction").value;
+        newCreation.race=RandomizeValue(character.race, newCreation.faction);
+        newCreation.sex=RandomizeValue(["Male","Female"]);
+        newCreation.class=RandomizeValue(character.class, newCreation.race);
+        // newCreation.spec=RandomizeValue(character.spec, newCreation.class);
+
+				let wtf = `${newCreation.race} ${newCreation.class}`;
+
+				$("#FactionChoice").removeClass('fadein').addClass('fadeout');
+				$("#RaceChoice").removeClass('fadein').addClass('fadeout');
+				$("#ClassChoice").removeClass('fadein').addClass('fadeout');
+				$("#YourCharacter").removeClass('fadein').addClass('fadeout');
+				window.clearTimeout(window.timer1);
+				window.clearTimeout(window.timer2);
+				window.clearTimeout(window.timer3);
+				window.clearTimeout(window.timer4);
+				window.clearTimeout(window.timer5);
+
+				window.timer1 = setTimeout( () => {
+					$("#FactionChoice").removeClass('fadeout').addClass('fadein');
+				  GetElement("FactionChoice").src = 'warcraft-images/' + newCreation.faction + '.jpg';
+				}, 1000);
+				window.timer2 = setTimeout( () => {
+					$("#RaceChoice").removeClass('fadeout').addClass('fadein');
+					GetElement("RaceChoice").innerHTML = newCreation.race;
+				}, 2000);
+				window.timer3 = setTimeout( () => {
+					$("#ClassChoice").removeClass('fadeout').addClass('fadein');
+					GetElement("ClassChoice").innerHTML = newCreation.class;
+				}, 5000);
+				window.timer4 = setTimeout( () => {
+					$("#YourCharacter").removeClass('fadeout').addClass('fadein');
+					GetElement("YourCharacter").src = `/warcraft-images/${newCreation.race} ${newCreation.class}.jpg`;
+				}, 3000);
+				window.timer5 = setTimeout( () => {
+					$("#GenderChoice").removeClass('fadeout').addClass('fadein');
+					GetElement("GenderChoice").innerHTML = newCreation.sex;
+				}, 6000);
+
+				console.log (`${newCreation.race} ${newCreation.class}.jpg`, window.timer);
+    }
+})(); //Int Main Function
+// -----------------------------------------------
+</script>
