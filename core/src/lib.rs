@@ -1,11 +1,11 @@
 use std::net::{TcpListener, TcpStream};
-use std::io::BufReader;
+// use std::io::BufReader;
 use web_threads::*;
 use std::io::prelude::*;
 use std::str;
 use routers::*;
-use std::time::{SystemTime};
-// use regex::Regex;
+use request_response::*;
+use httparse::EMPTY_HEADER;
 
 
 pub fn server_listen <'a> (addr: &str, port: &str, threads: usize, route_map: Vec<RouteHandle>) {
@@ -28,75 +28,22 @@ pub fn server_listen <'a> (addr: &str, port: &str, threads: usize, route_map: Ve
 /* =========================================== */
 
 /* ========================================== */
-fn forge_request(buffer: [u8; 1024]) -> Result<Request, ()> {
+fn handle_connection (mut tcp_stream: TcpStream, route_map: Vec<RouteHandle>) {
 
-  let mut req_string = str::from_utf8(&buffer).unwrap().replace("\r\n", ": ");
-  let mut req_parts = req_string.split(" ");
-  // println!("{:?}", req_string);
-
-  let method = match req_parts.next() {
-      Some(method) => method.trim().to_string(),
-      None => return Err(()),
-  };
-  let url = match req_parts.next() {
-      Some(path) => path.trim().to_string(),
-      None => return Err(()),
-  };
-  let protocol = match req_parts.next() {
-    Some(method) => method.trim().to_string(),
-    None => return Err(()),
-  };
-  let host = match req_parts.next() {
-    Some(version) => version.trim().to_string(),
-    None => return Err(()),
-  };
-  let source_ip = match req_parts.next() {
-      Some(version) => version.trim().to_string(),
-      None => return Err(()),
-  };
-  let connection = match req_parts.next() {
-    Some(version) => version.trim().to_string(),
-    None => return Err(()),
-  };
-  let time = SystemTime::now();
-
-  let request = Ok(Request {
-    method,
-    url,
-    source_ip,
-    connection,
-    time,
-    protocol,
-  });
-  // println!("{:?}", request);
-  return request;
-
-}
-/* ========================================== */
-
-// VERIFY IF THE REQUEST HEADER PROPERTY (Sec-Fetch-Dest:) is equal to image/audio/video. And attempt to return data of that file from resources
+  let mut buffer = [0; 1024]; // Buffer size. Each number represents one byte (one character length). 1024 is ideal for catching the essential information from a TCP request. 
+  let mut headers = [EMPTY_HEADER; 16];
+  tcp_stream.read(&mut buffer).unwrap(); // Parses binary buffer from the request
 
 
-/* ========================================== */
-fn handle_connection (mut request_stream: TcpStream, route_map: Vec<RouteHandle>) {
+  let request = forge_request(&buffer, &mut headers);
 
-  let buffer_reader = BufReader::new(&mut request_stream);
-  // let mut buffer = [0; 1024]; // Buffer size. Each number represents one byte (one character length). 1024 is ideal for catching the essential information from a TCP request. 
-  // stream.read(&mut buffer).unwrap(); // Parses binary buffer from the request
-  let request = buffer_reader.lines().next().unwrap().unwrap();
+  let response = Routes::map(&request, route_map); // Maps the url+method from request struct to appropriate route defined by programmer in the "route_map" vector, which was declared in main file. Response will ultimately be turned into a Vec<u8> buffer stream, but is handled differently depending on the return stream and type of data received (i.e, a file, plain text, data stream). 
 
-  // let request = forge_request(buffer).unwrap(); // <<WIP>> Translates binary bytes into text properties, storing them in a struct which tells the CPU how to store the request information in memory (request struct) 
-  let response = Routes::map(&request.as_bytes(), route_map); // Maps the url+method from request struct to appropriate route defined by programmer in the "route_map" vector, which was declared in main file. Response will ultimately be turned into a Vec<u8> buffer stream, but is handled differently depending on the return stream and type of data received (i.e, a file, plain text, data stream). 
-
-  // stream.write(&response).unwrap(); //Writes the now-structured data into a buffer for the TCP stream
-  // stream.flush().unwrap() //Returns the binary data on the TCP stream to the client as a response
   
   match response {
-    Response::File(file) => {
-      println!("File? {:?}", file);
-      stream.write_all(file.as_bytes()).unwrap(); //Writes the now-structured data into a buffer for the TCP stream
-      stream.flush().unwrap() //Returns the binary data on the TCP stream to the client as a response
-    }
+    Response::Webpage(file) => tcp_stream.write_all(file.as_bytes()).unwrap(), //Writes the string data from file into a buffer for the TCP stream and returns the binary data to client as a response
+    Response::File(buf) => tcp_stream.write_all(&buf).unwrap(),
+    // Response::Stream(buf) => tcp_stream.write_all(&buf).unwrap(),
     _ => panic!("Response invalid!") //If the response is a UDP request or something? This should rarely occur
   }
   

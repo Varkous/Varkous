@@ -7,4 +7,5 @@ edition = "2021"
 [dependencies]
 web_threads = {path = "../web_threads"}
 routers = {path = "../routers"}
-regex = "1"
+request_response = {path = "../request_response"}
+httparse = "1"
