@@ -12,7 +12,7 @@
 	</head>
 	<body>
 		<main class="container">
-			<img src="/warcraft-images/WoW Logo.png" alt="" style="width: 600px; height: 350px;">
+			<img src="WoW_Logo.png" alt="" style="width: 600px; height: 350px;">
 			<h1>Random Character Generator</h1>
 			<p>Select your faction if allowed, hit SUBMIT, and may God have mercy on your soul.</p>
 			<section class="container">
@@ -46,7 +46,7 @@
 	--RaceClass: "";
 }
 	body {
-		background: url('/warcraft-images/Thunder Bluff.jpg');
+		background: url('Thunder Bluff.jpg');
 		background-size: cover;
 		font-family: 'Arial';
 		color: aliceblue;
@@ -110,7 +110,6 @@
 		align-self: center;
 		align-content: center;
 		flex-direction: column;
-		min-height: 1000px;
 		width: 80%;
 	}
 	h2 {
@@ -209,7 +208,7 @@ function GetElement(id) {
 
 				window.timer1 = setTimeout( () => {
 					$("#FactionChoice").removeClass('fadeout').addClass('fadein');
-				  GetElement("FactionChoice").src = 'warcraft-images/' + newCreation.faction + '.jpg';
+				  GetElement("FactionChoice").src = newCreation.faction + '.jpg';
 				}, 1000);
 				window.timer2 = setTimeout( () => {
 					$("#RaceChoice").removeClass('fadeout').addClass('fadein');
@@ -221,7 +220,7 @@ function GetElement(id) {
 				}, 5000);
 				window.timer4 = setTimeout( () => {
 					$("#YourCharacter").removeClass('fadeout').addClass('fadein');
-					GetElement("YourCharacter").src = `/warcraft-images/${newCreation.race} ${newCreation.class}.jpg`;
+					GetElement("YourCharacter").src = `${newCreation.race} ${newCreation.class}.jpg`;
 				}, 3000);
 				window.timer5 = setTimeout( () => {
 					$("#GenderChoice").removeClass('fadeout').addClass('fadein');

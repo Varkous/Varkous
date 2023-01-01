@@ -7,7 +7,6 @@ name = "core"
 version = "0.1.0"
 dependencies = [
  "httparse",
- "request_response",
  "routers",
  "web_threads",
 ]
@@ -19,27 +18,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d897f394bad6a705d5f4104762e116a75639e470d80901eed05a860a95cb1904"
 
 [[package]]
-name = "request_response"
-version = "0.1.0"
-dependencies = [
- "httparse",
-]
-
-[[package]]
 name = "routers"
 version = "0.1.0"
 dependencies = [
  "httparse",
- "request_response",
 ]
 
 [[package]]
 name = "varkous-rust"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "core",
  "httparse",
- "request_response",
  "routers",
  "web_threads",
 ]

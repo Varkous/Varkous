@@ -1,6 +1,6 @@
 [package]
 name = "varkous-rust"
-version = "0.1.0"
+version = "1.0.0"
 authors = ["Arclite"]
 edition = "2021"
 
@@ -10,5 +10,4 @@ edition = "2021"
 core = { path = "core" }
 web_threads = { path = "web_threads" }
 routers = { path = "routers" }
-request_response = { path = "request_response"}
 httparse = "1"
