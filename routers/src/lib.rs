@@ -1,13 +1,22 @@
 use std::{str, fs, env::current_dir}; // The legendary String, a struct of characters (individual letters, 1 byte each), and <fs> for tapping into host File System. Needed to open, read and write files (such as HTML documents)
-use httparse::{Request, Header};
+use httparse::{Request, Header, Status};
 use std::process::{Command, Stdio};
 
 // ========================================================
 pub fn forge_request <'buf, 'headers> (request_buffer: &'buf [u8; 1024], headers: &'headers mut [Header<'buf>; 16]) -> Request<'headers, 'buf> {
 
   let mut request = Request::new(headers);
-  request.parse(request_buffer).unwrap();
+  let parsed = request.parse(request_buffer);
+  match parsed {
+    Ok(req) => req,
+    Err(err) => {
+      println!("Error in request? {}", err);
+      Status::Partial
+    }
+  };
+  // request.parse(request_buffer).unwrap();
   return request;
+
 
 }
 
@@ -23,10 +32,21 @@ unsafe impl Sync for RouteHandle {}
 pub struct Routes;
 
 impl Routes {
+  /* ----------------------------------------------------------------------------------------------------- */
   // Every time a request is made, the request is mapped against the route handlers provided by the programmer, and returns the handler the route is assigned to
   pub fn map(request: &Request, route_map: Vec<RouteHandle>) -> Response {
 
-    let method = request.method.unwrap();
+    println!("Request: {:?}", request);
+
+    let method = match request.method {
+      Some(str) => str,
+      None => "Error"
+    };
+    
+    if method == "Error" {
+      return Response::Error(404)
+    }
+
     let url =  request.path.unwrap();
     let path = format!("{method} {url}");
 
@@ -52,12 +72,10 @@ pub enum Response {
 
 // ===============================================
 impl Response {
-
-  // ========================================================
+/* ----------------------------------------------------------------------------------------------------- */
   pub fn get_file (mut url: &str) -> String {
 
     // Remove initial forward flash and replace %20 space chars with actual Spaces for correct linux-file searching
-
     let mut url_chars = url.chars();
     if url_chars.next().unwrap() == '/' {
       url = url_chars.as_str();
@@ -83,9 +101,9 @@ impl Response {
     return printed_file_name
   }
 
-  // ===============================================
-  pub fn send(request: &Request, filepath: &str, http_status: i32) -> Response {
 
+/* ----------------------------------------------------------------------------------------------------- */
+  pub fn send(request: &Request, filepath: &str, http_status: i32) -> Response {
 
     let filename = Response::get_file(filepath);
     if filename.len() < 1 {
@@ -118,7 +136,7 @@ impl Response {
 
 }
 
-// ========================================================
+/* ----------------------------------------------------------------------------------------------------- */
 // Replaces all instances of the given "replace" string with the "with" string. 
 pub fn replace_all (mut text: String, replace: &str, with: &str) -> String {
 

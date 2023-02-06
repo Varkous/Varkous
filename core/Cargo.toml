@@ -8,3 +8,4 @@ edition = "2021"
 web_threads = {path = "../web_threads"}
 routers = {path = "../routers"}
 httparse = "1"
+dotenv = "0.15"

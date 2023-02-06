@@ -67,10 +67,18 @@ fn main() {
       RouteHandle("GET /favicon", &Routes::favicon),
       RouteHandle("GET /workorder", &Routes::workorder),
       RouteHandle("GET /mpst", &Routes::mpst),
-      RouteHandle("GET /wowcharandom", &Routes::wow),
+      RouteHandle("GET /wowchar", &Routes::wow),
     ];  
 
-    server_listen("192.168.3.253", "6001",  6, route_map);
+    let options = ServerOptions {
+      ip_address: "127.0.0.1",
+      port: 2001,
+      threads: 4,
+      https: false,
+      route_map: route_map,
+    };
+
+    server_listen(options);
   
 }
 /* ========================================== */

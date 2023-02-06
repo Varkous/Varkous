@@ -1,6 +1,9 @@
-youtube-mpst
-resources
+youtube-mpst/
+wowchar/
+resources/
 target
+ssl
+.env
 src/main.exe
 workspace.code-workspace
 README.md
